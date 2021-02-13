@@ -185,11 +185,18 @@ impl<'a> ElementQuery<'a> {
         self.poller = poller;
         self
     }
+    
+     /// Force this ElementQuery to wait for the specified timeout, polling once
+    /// after each interval. This will override the poller for this
+    /// ElementQuery only.
+    pub fn wait(self) -> Self {
+        self.wait_for(Duration::from_secs(300), Duration::from_millis(10))
+    }
 
     /// Force this ElementQuery to wait for the specified timeout, polling once
     /// after each interval. This will override the poller for this
     /// ElementQuery only.
-    pub fn wait(self, timeout: Duration, interval: Duration) -> Self {
+    pub fn wait_for(self, timeout: Duration, interval: Duration) -> Self {
         self.with_poller(ElementPoller::TimeoutWithInterval(timeout, interval))
     }
 
